@@ -1,0 +1,8 @@
+{
+    "port": 9000,
+    "domain": "http://localhost:9000",
+    "mongo": {
+        "uri": "mongodb+srv://thakurrajeev37:T4a86k8z45zjADIT@cluster0.s9qjldy.mongodb.net/?retryWrites=true&w=majority"
+    },
+    "ACCESS_TOKEN_SECRET": "sfsfdffdfdd"
+}
