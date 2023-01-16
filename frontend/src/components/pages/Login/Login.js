@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { authActions } from "../../../store";
+import { authActions } from "../../../redux/slice/authSlice";
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const Login = () => {
     }
     const sendRequest = async () => {
         const { email, password } = inputs;
-        const res = await axios.post("http://localhost:9000/api/user/signIn", {
+        const res = await axios.post("http://localhost:9000/api/auth/signIn", {
             email,
             password
         }).catch(err => { console.log(err)});
@@ -30,7 +30,10 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         sendRequest()
-            .then(() => dispatch(authActions.login()))
+            .then((data) => {
+                dispatch(authActions.setCredentials(data));
+                localStorage.setItem("persist", JSON.stringify(true))
+            })
             .then(() => history("/welcome"));
     };
     return (

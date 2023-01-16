@@ -1,60 +1,32 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux'
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-axios.defaults.withCredentials = true;
-let firstRender = true;
+import { selectCurrentToken } from "../../../redux/slice/authSlice";
+
 const Welcome = () => {
+    const token = useSelector(selectCurrentToken)
     const [user, setUser] = useState();
-    const history = useNavigate();
-    const refreshToken = async () => {
-        const res = await axios.get("http://localhost:9000/api/user/refresh", {
-            withCredentials: true
-        }).catch(err => {
-            return err.response;
-        })
-        const data = await res.data;
-        return data;
-    }
-    const sendRequest = async () => {
-        const res = await axios.get("http://localhost:9000/api/user/user", {
-            withCredentials: true
-        }).catch(err => {
-            return err.response;
-        })
-        const data = await res.data;
-        return data;
+    const headers = {
+        "authorization": `Bearer ${token}`
     }
     useEffect(() => {
-        if(true) {
-            firstRender = false;
-            sendRequest()
-                .then((data) => {
-                    if(!data.user) {
-                        history("/");
-                    }
-                    setUser(data.user);
-                })
-                .catch((err) => {
-                    history("/");
-                })
-        }
-        let interval = setInterval( () => {
-            refreshToken()
-                .then((data) => {
-                    if(!data.user) {
-                        history("/");
-                    }
-                    setUser(data.user);
-                })
-                .catch((err) => {
-                    history("/");
-                })
-        }, 1000 * 28) 
-        return () => clearInterval(interval);
+        axios.get("http://localhost:9000/api/user/user", {
+            withCredentials: true,
+            headers: headers
+        }).then(res => {
+            console.log("***user data res***", res.data);
+            setUser(res.data.user);
+
+        })
+        .catch(err => {
+            console.log("***user data err***", err);
+        })
     }, [])
+    
     return (
         <div>
-            Welcome {user && <h1>{user.name}</h1>}
+            Welcome <h1>{user?.name}</h1>
+            Status <h1>{user?.email}</h1>
         </div>
     )
 }

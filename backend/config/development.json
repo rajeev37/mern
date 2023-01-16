@@ -4,5 +4,11 @@
     "mongo": {
         "uri": "mongodb+srv://thakurrajeev37:T4a86k8z45zjADIT@cluster0.s9qjldy.mongodb.net/?retryWrites=true&w=majority"
     },
-    "ACCESS_TOKEN_SECRET": "sfsfdffdfdd"
+    "ACCESS_TOKEN_SECRET": "sfsfdffdfdd",
+    "REFRESH_TOKEN_SECRET": "refreshToken",
+    "ROLES": {
+        "Employee": "1001",
+        "Editor": "2001",
+        "Admin": "3001"
+    }
 }

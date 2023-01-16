@@ -2,10 +2,11 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { authActions } from "../../../store";
+import { authActions } from "../../../redux/slice/authSlice";
+import useAuth from '../../hooks/useAuth';
 
 const Header = () => {
-    const isLoggedIn = useSelector((state) => state.isLoggedIn);
+    const { isLoggedIn } = useAuth();
     console.log("header", isLoggedIn);
     const dispatch = useDispatch();
     const sendLogoutReq = async () => {

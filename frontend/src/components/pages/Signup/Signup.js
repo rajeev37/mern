@@ -17,12 +17,11 @@ const Signup = () => {
     }
     const sendRequest = async () => {
         const { name, email, password } = inputs;
-        const res = await axios.post("http://localhost:9000/api/user/signUp", {
+        const res = await axios.post("http://localhost:9000/api/auth/signUp", {
             name,
             email,
             password
         }).catch(err => { console.log(err)});
-        console.log(res);
         const data = await res.data;
         return data; 
     }

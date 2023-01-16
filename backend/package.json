@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon server.js",
+    "start-b": "nodemon server.js",
     "release": "release-it"
   },
   "author": "Rajeev",

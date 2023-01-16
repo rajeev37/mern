@@ -12,11 +12,13 @@ import { Routes, Route } from "react-router-dom";
 import Signup from "./components/pages/Signup/Signup";
 import Login from "./components/pages/Login/Login";
 import Welcome from "./components/pages/Welcome/Welcome";
+import PersistLogin from './components/molecules/PersistLogin';
+import RequireAuth from './components/molecules/RequireAuth';
 import { useSelector } from "react-redux";
 const ROLES = {
-  'User': 2001,
-  'Editor': 1984,
-  'Admin': 5150
+  'User': 1001,
+  'Editor': 2001,
+  'Admin': 3001
 }
 function App () {
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
@@ -26,8 +28,12 @@ function App () {
         <Route path="/" element={<Layout/>} >
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
-          <Route path="/welcome" element={<Welcome />} />
           <Route path="*" element={<NotFound />} />
+          <Route element={<PersistLogin/>}>
+            <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]}/>}>
+              <Route path="/welcome" element={<Welcome />} />
+            </Route>
+          </Route>
         </Route>
       </Routes>
       // <div>
