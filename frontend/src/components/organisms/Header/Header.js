@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { authActions } from "../../../redux/slice/authSlice";
 import useAuth from '../../hooks/useAuth';
+import "./Header.css";
 
 const Header = () => {
-    const { isLoggedIn } = useAuth();
-    console.log("header", isLoggedIn);
+    const { isAdmin } = useAuth();
     const dispatch = useDispatch();
     const sendLogoutReq = async () => {
-        const res = await axios.post("http://localhost:9000/api/user/logout", null, {
+        const res = await axios.post("http://localhost:9000/api/auth/logout", null, {
           withCredentials: true,
         });
         if (res.status == 200) {
@@ -22,33 +22,48 @@ const Header = () => {
         sendLogoutReq().then(() => dispatch(authActions.logout()));
       };
     return (
-        <div>
-            <ul className="header flex-container flex-s list-style"> 
-                <li className="flex-item">
+        <div className='navBar'>
+            <img src='logo192.png' className='logo'/>
+            <ul>
+                <li>
                     <Link to="/">Home</Link>
                 </li>
-                <li className="flex-item">
-                    <Link to="/about">About</Link>
+                {(isAdmin) &&<li>
+                    <Link to="/users">UsersList</Link>
+                </li>}
+                <li>
+                    <Link to="/" onClick={handleLogout}>Logout</Link>
                 </li>
-                { !isLoggedIn && (
-                    <>
-                        <li className="flex-item">
-                            <Link to="/signup">Signup</Link>
-                        </li>
-                        <li className="flex-item">
-                            <Link to="/login">Login</Link>
-                        </li>
-                    </>
-                    
-                )}
-                { isLoggedIn && (
-                    <li className="flex-item">
-                        <Link to="/" onClick={handleLogout}>Logout</Link>
-                    </li>
-                )}
-                
             </ul>
+
         </div>
+        // <div>
+        //     <ul className="header flex-container flex-s list-style"> 
+        //         <li className="flex-item">
+        //             <Link to="/">Home</Link>
+        //         </li>
+        //         <li className="flex-item">
+        //             <Link to="/about">About</Link>
+        //         </li>
+        //         { !isLoggedIn && (
+        //             <>
+        //                 <li className="flex-item">
+        //                     <Link to="/signup">Signup</Link>
+        //                 </li>
+        //                 <li className="flex-item">
+        //                     <Link to="/login">Login</Link>
+        //                 </li>
+        //             </>
+                    
+        //         )}
+        //         { isLoggedIn && (
+        //             <li className="flex-item">
+        //                 <Link to="/" onClick={handleLogout}>Logout</Link>
+        //             </li>
+        //         )}
+                
+        //     </ul>
+        // </div>
     )
 }
 

@@ -3,10 +3,10 @@ import bcrypt from "bcryptjs";
 import Jwt from "jsonwebtoken";
 
 export const signUp = async (req, res) => {
-    const { name, email, roles, password } =  req.body;
+    const { name, username, email, roles, password } =  req.body;
     let existingUser;
     try {
-        existingUser = await User.findOne({email: email});
+        existingUser = await User.findOne({$or: [{email: email}, {username: username}]});
     } catch (error) {
         return res.status(400).json({message: error});
     }
@@ -16,6 +16,7 @@ export const signUp = async (req, res) => {
     const hashedPwd = bcrypt.hashSync(password);
     const user = new User({
         name,
+        username,
         email,
         roles,
         password: hashedPwd
@@ -36,7 +37,7 @@ export const signIn = async (req, res) => {
     }
     let existingUser;
     try {
-        existingUser = await User.findOne({email: email});
+        existingUser = await User.findOne({$or: [{email: email}, {username: email}]});
     } catch (error) {
         return res.status(400).json({message: error});
     }
@@ -53,6 +54,7 @@ export const signIn = async (req, res) => {
         {
             "userInfo": {
                 "id": existingUser._id,
+                "username": existingUser.username,
                 "roles": roles
             }
         },
@@ -93,6 +95,7 @@ export const refreshToken = async (req, res, next) => {
                 {
                     "userInfo": {
                         "id": foundUser._id,
+                        "username": foundUser.username,
                         "roles": roles
                     }
                 },

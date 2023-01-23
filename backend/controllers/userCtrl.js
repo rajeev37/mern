@@ -14,14 +14,14 @@ export const getUser = async (req, res) => {
     return res.status(200).json({user});
 };
 export const getAllUser = async (req, res) => {
-    let user;
+    let users;
     try {
-        user = await User.find();
+        users = await User.find().select("-password");
     } catch (error) {
         return new Error(error);
     }
-    if(!user) {
+    if(!users) {
         return res.status(404).json({message: "User Not Found!"});
     }
-    return res.status(200).json({user});
+    return res.status(200).json({users});
 };

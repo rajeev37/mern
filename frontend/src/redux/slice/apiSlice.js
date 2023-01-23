@@ -1,7 +1,14 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-export const apiSlice = createApi({
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:9000' }),
-    tagTypes: ['Note', 'User'],
-    endpoints: builder => ({})
+export const apiSlice = createSlice({
+    name: "api",
+    initialState: { isLoading: false },
+    reducers: {
+        setLoading(state, action) {
+            state.isLoading = action.payload;
+        }
+    }
 })
+export const apiActions = apiSlice.actions;
+export const loading = (state) => state.api.isLoading;
+export default apiSlice.reducer;

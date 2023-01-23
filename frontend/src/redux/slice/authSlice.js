@@ -10,6 +10,7 @@ const authSlice = createSlice({
             state.token = accessToken;
         },
         logout(state) {
+            localStorage.setItem("persist", JSON.stringify(false));
             state.token = null;
         }
     }

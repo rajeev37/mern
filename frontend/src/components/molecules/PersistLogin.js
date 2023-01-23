@@ -3,30 +3,35 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { authActions, selectCurrentToken } from "../../redux/slice/authSlice";
-import usePersist from '../hooks/usePersist';
+import { toast } from 'react-toastify';
+// import usePersist from '../hooks/usePersist';
 
 axios.defaults.withCredentials = true;
 
 const PersistLogin = () => {
-    const [persist] = usePersist()
-    const token = useSelector(selectCurrentToken)
+    let persist = localStorage.getItem("persist", JSON.stringify(true));
+    const token = useSelector(selectCurrentToken);
+    console.log("***persist", persist);
+    console.log("***token", token);
     const dispatch = useDispatch();
     const history = useNavigate();
     const effectRan = useRef(false)
     const refreshToken = async () => {
-        const res = await axios.get("http://localhost:9000/api/auth/refresh", {
-            withCredentials: true
-        }).catch(err => {
-            console.log("***refresh token err", err);
+        try {
+            const res = await axios.get("http://localhost:9000/api/auth/refresh", {
+                withCredentials: true
+            });
+            const data = await res.data;
+            console.log("***refresh token data", data);
+            dispatch(authActions.setCredentials(data));
+        } catch (error) {
+            toast.warn(error.response.data.message);
+            console.log("***refresh token err", error);
             history("/");
-        })
-        const data = await res.data;
-        console.log("***refresh token data", data);
-        dispatch(authActions.setCredentials(data));
-        return data;
+        }
     }
     useEffect(() => {
-        if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
+        if (effectRan.current === true) {
             if (!token && persist) refreshToken();
         }
         return () => effectRan.current = true

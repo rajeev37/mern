@@ -1,0 +1,46 @@
+.home {
+    width: 100%;
+    text-align: center;
+    position:absolute;
+    transform: translateY(-50%);
+    top: 50%;
+}
+.home h1 {
+    font-size: 70px;
+    margin-top: 80px;
+}
+.home p {
+    margin: 20px auto;
+    font-weight: 100;
+    line-height: 25px;
+}
+.sign-btn {
+    width: 200px;
+    padding: 15px 0;
+    text-align: center;
+    margin: 20px 10px;
+    border-radius: 25px;
+    background: transparent;
+    font-weight: bold;
+    border: 2px solid #e0561f;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+span {
+    background: #e0561f;
+    height: 100%;
+    width: 0;
+    position:absolute;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+    transition: 0.5s;
+}
+.sign-btn:hover span {
+    width: 100%;
+}
+.sign-btn:hover {
+    border: none;
+}
+

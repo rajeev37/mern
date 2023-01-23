@@ -1,17 +1,17 @@
 import React from "react";
 import './App.css';
-import Header from "./components/organisms/Header";
 import Home from "./components/pages/Home";
 import About from "./components/pages/About";
 import NotFound from "./components/pages/NotFound";
-import Editor from "./components/pages/Editor";
-import Admin from "./components/pages/Admin";
 import Layout from "./components/organisms/Layout";
 
 import { Routes, Route } from "react-router-dom";
 import Signup from "./components/pages/Signup/Signup";
 import Login from "./components/pages/Login/Login";
 import Welcome from "./components/pages/Welcome/Welcome";
+import UsersList from "./components/pages/Users/UsersList";
+import EditUser from "./components/pages/Users/EditUser";
+import NewUserForm from "./components/pages/Users/NewUserForm";
 import PersistLogin from './components/molecules/PersistLogin';
 import RequireAuth from './components/molecules/RequireAuth';
 import { useSelector } from "react-redux";
@@ -33,6 +33,13 @@ function App () {
             <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]}/>}>
               <Route path="/welcome" element={<Welcome />} />
             </Route>
+            <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+                  <Route path="users">
+                    <Route index element={<UsersList />} />
+                    <Route path=":id" element={<EditUser />} />
+                    <Route path="new" element={<NewUserForm />} />
+                  </Route>
+                </Route>
           </Route>
         </Route>
       </Routes>
